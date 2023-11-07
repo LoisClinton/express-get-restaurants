@@ -4,17 +4,17 @@ const Restaurant = require("../models/index");
 const db = require("../db/connection");
 
 //TODO: Create your GET Request Route Below:
-app.get("/restaurants", async (request, resolve) => {
+app.get("/restaurants", async (request, response) => {
   const restaurants = await Restaurant.findAll();
   // Send restaurants as converted to a JSON string .
-  resolve.json(restaurants);
+  response.json(restaurants);
 });
 
-app.get("/restaurants/:id", async (request, resolve) => {
+app.get("/restaurants/:id", async (request, response) => {
   const id = request.params.id;
   const restaurants = await Restaurant.findByPk(id);
   // Send restaurants as converted to a JSON string .
-  resolve.json(restaurants);
+  response.json(restaurants);
 });
 
 app.use(express.json());
@@ -22,7 +22,7 @@ app.use(express.urlencoded());
 
 // request objects’ body using request.body
 
-app.post("/restaurants", async (request, resolve) => {
+app.post("/restaurants", async (request, response) => {
   await Restaurant.create({
     name: request.body.name,
     location: request.body.location,
@@ -30,10 +30,10 @@ app.post("/restaurants", async (request, resolve) => {
   });
 
   const restaurants = await Restaurant.findAll();
-  resolve.json(restaurants);
+  response.json(restaurants);
 });
 
-app.put("/restaurants/:id", async (request, resolve) => {
+app.put("/restaurants/:id", async (request, response) => {
   await Restaurant.update(
     {
       name: request.body.name,
@@ -47,17 +47,17 @@ app.put("/restaurants/:id", async (request, resolve) => {
     }
   );
   const thisRestaurant = await Restaurant.findByPk(request.params.id);
-  resolve.json(thisRestaurant);
+  response.json(thisRestaurant);
 });
 
-app.delete("/restaurants/:id", async (request, resolve) => {
+app.delete("/restaurants/:id", async (request, response) => {
   await Restaurant.destroy({
     where: {
       id: request.params.id,
     },
   });
 
-  resolve.send("Item deleted");
+  response.send("Item deleted");
 });
 
 module.exports = app;
